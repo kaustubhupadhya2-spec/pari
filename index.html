@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Will you be my Valentine?</title>
-<!-- ANDI MANDI SHANDI JO CODE PADE USKI.....-->
+
   <!-- Confetti library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
@@ -41,7 +41,6 @@
     }
 
     .card {
-      position: relative;
       width: min(720px, 92vw);
       padding: 26px 22px;
       background: var(--card);
@@ -104,18 +103,6 @@
       margin-top: 10px;
       font-size: 13px;
       opacity: .7;
-      transition: all 0.3s ease;
-    }
-
-    .hint.under-yes {
-      position: absolute;
-      left: 22%;
-      top: 72%;
-      transform: translateX(-50%);
-      font-weight: 600;
-      color: var(--yes);
-      opacity: 1;
-      font-size: 14px;
     }
 
     .result {
@@ -184,7 +171,7 @@
             fill="#ff7aa2"/>
     </svg>
 
-    <h1>vranda will you be my valentine?</h1>
+    <h1>chloe will you be my valentine?</h1>
 
     <section class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
@@ -192,14 +179,14 @@
     </section>
 
     <!-- HINT (ONLY FIRST SECTION) -->
-    <div class="hint" id="hint"></div>
+    <div class="hint" id="hint">“No” seems a bit shy 😈</div>
 
     <section class="result" id="result">
       <h2>YAY! 🎉</h2>
       <img
         class="fireworks"
-        src="https://media1.tenor.com/m/5nSKlBlwdkIAAAAC/cat.gif"
-        alt="Happy Cat"
+        src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
+        alt="Fireworks"
       />
     </section>
   </main>
@@ -256,71 +243,11 @@
       }, 300);
     }
 
-    /* ---------- HINT MESSAGES ---------- */
-    // Messages with underYes: true will appear under the Yes button
-    const hintMessages = [
-      { text: "i know you didn't mean that, try again 🥺", underYes: false },
-      { text: "really? 🥹👉👈", underYes: false },
-      { text: "think again...", underYes: false },
-      { text: "ummmm....", underYes: false },
-      { text: "Nooooo 😭", underYes: false },
-      { text: "look at me too 👀", underYes: true },
-      { text: "i am so handsome 😎", underYes: true },
-      { text: "ik you want meeee 👁️‍🗨️👁️‍🗨️", underYes: true },
-      { text: "please? 🥺", underYes: false },
-      { text: "you're breaking my heart 💔", underYes: false },
-      { text: "but whyyy 😩", underYes: false },
-      { text: "i'll wait forever for you ⏳", underYes: false },
-      { text: "are you sure about that? 🤨", underYes: false },
-      { text: "my heart can't take this 😢", underYes: false },
-      { text: "just say yes already 💕", underYes: false },
-      { text: "i promise to be good 🤞", underYes: false },
-      { text: "pretty please? 🙏", underYes: false },
-      { text: "you know you want to 😏", underYes: false },
-      { text: "don't do this to me 😿", underYes: false },
-      { text: "i'll give you chocolates 🍫", underYes: false },
-      { text: "and flowers 🌹", underYes: false },
-      { text: "and all my love 💝", underYes: false },
-      { text: "last chance... 👀", underYes: false },
-      { text: "okay fine... jk NEVER GIVING UP 😤", underYes: false }
-    ];
-
     /* ---------- YES BUTTON GROWS ---------- */
     let yesScale = 1;
-    let hoverCount = 0;
-
     function growYes() {
-      hoverCount++;
-
-      // Update hint message based on hover count
-      if (hoverCount <= hintMessages.length) {
-        const msg = hintMessages[hoverCount - 1];
-        hint.textContent = msg.text;
-        if (msg.underYes) {
-          hint.classList.add('under-yes');
-        } else {
-          hint.classList.remove('under-yes');
-        }
-      }
-
-      // After 25 hovers, make Yes take over the screen
-      if (hoverCount >= 25) {
-        yesScale = 20;
-        yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
-        yesBtn.style.position = 'fixed';
-        yesBtn.style.left = '50%';
-        yesBtn.style.top = '50%';
-        yesBtn.style.transform = 'translate(-50%, -50%) scale(20)';
-        yesBtn.style.zIndex = '10000';
-        noBtn.style.display = 'none';
-        hint.textContent = "There's only one answer now! 💕";
-        return;
-      }
-
-      // Gradually increase Yes size with each hover
-      yesScale = Math.min(4, yesScale + 0.15);
+      yesScale = Math.min(2.2, yesScale + 0.1);
       yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
-      yesBtn.style.transition = 'transform 0.3s ease';
     }
 
     /* ---------- NO BUTTON RUNS AWAY ---------- */
@@ -338,21 +265,8 @@
       dx /= mag;
       dy /= mag;
 
-      // After 10 hovers, move much farther away or opposite direction
-      let moveDistance;
-      if (hoverCount >= 10) {
-        moveDistance = 80 + Math.random() * 60; // Farther after 10
-        // Sometimes flip to opposite side
-        if (Math.random() > 0.5) {
-          dx = -dx;
-          dy = -dy;
-        }
-      } else {
-        moveDistance = 25 + hoverCount * 5; // Start very small, gradually increase
-      }
-
-      let newLeft = (b.left - z.left) + dx * moveDistance;
-      let newTop  = (b.top - z.top) + dy * moveDistance;
+      let newLeft = (b.left - z.left) + dx * 150;
+      let newTop  = (b.top - z.top) + dy * 150;
 
       newLeft = clamp(newLeft, 0, z.width - b.width);
       newTop  = clamp(newTop, 0, z.height - b.height);
@@ -370,7 +284,7 @@
         (b.left + b.width / 2) - e.clientX,
         (b.top + b.height / 2) - e.clientY
       );
-      if (d < 50) moveNo(e.clientX, e.clientY);
+      if (d < 140) moveNo(e.clientX, e.clientY);
     });
 
     noBtn.addEventListener("click", e => e.preventDefault());
