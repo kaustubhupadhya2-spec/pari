@@ -359,6 +359,19 @@
       let newLeft = (b.left - z.left) + dx * moveDistance;
       let newTop = (b.top - z.top) + dy * moveDistance;
 
+      // 1 in 3 chance: teleport to opposite side of the zone (across middle line)
+      if (Math.random() < 0.33) {
+        const currentCenter = b.left - z.left + b.width / 2;
+        const zoneMidpoint = z.width / 2;
+        // If on right side, go to left; if on left side, go to right
+        if (currentCenter > zoneMidpoint) {
+          newLeft = Math.random() * (zoneMidpoint - b.width); // Left side
+        } else {
+          newLeft = zoneMidpoint + Math.random() * (zoneMidpoint - b.width); // Right side
+        }
+        newTop = Math.random() * (z.height - b.height); // Random vertical position
+      }
+
       newLeft = clamp(newLeft, 0, z.width - b.width);
       newTop = clamp(newTop, 0, z.height - b.height);
 
@@ -370,7 +383,7 @@
     }
 
     let lastMoveTime = 0;
-    const MOVE_COOLDOWN = 400; // milliseconds between moves
+    const MOVE_COOLDOWN = 150; // milliseconds between moves
 
     zone.addEventListener("pointermove", e => {
       const now = Date.now();
@@ -387,7 +400,26 @@
       }
     });
 
-    noBtn.addEventListener("click", e => e.preventDefault());
+    noBtn.addEventListener("click", e => {
+      e.preventDefault();
+      // Show next hint and move the button when clicked
+      const z = zone.getBoundingClientRect();
+      const b = noBtn.getBoundingClientRect();
+      // Teleport to opposite side
+      const currentCenter = b.left - z.left + b.width / 2;
+      const zoneMidpoint = z.width / 2;
+      let newLeft, newTop;
+      if (currentCenter > zoneMidpoint) {
+        newLeft = Math.random() * (zoneMidpoint - b.width);
+      } else {
+        newLeft = zoneMidpoint + Math.random() * (zoneMidpoint - b.width);
+      }
+      newTop = Math.random() * (z.height - b.height);
+      noBtn.style.left = Math.max(0, newLeft) + "px";
+      noBtn.style.top = Math.max(0, Math.min(newTop, z.height - b.height)) + "px";
+      noBtn.style.transform = "none";
+      growYes();
+    });
 
     /* ---------- YES CLICK ---------- */
     yesBtn.addEventListener("click", () => {
